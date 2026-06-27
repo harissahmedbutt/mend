@@ -47,6 +47,7 @@ export default function Hero() {
           <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-7">
             <a
               href="/apply"
+              data-analytics="rate_check_started"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-[15px] font-semibold text-brand-navy transition hover:bg-white/90"
             >
               Check your rate

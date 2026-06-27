@@ -36,6 +36,7 @@ export default function FinalCTA() {
 
           <a
             href={CTA.primary.href}
+            data-analytics="rate_check_started"
             className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-[15px] font-semibold text-brand-navy hover:bg-white/90 transition"
           >
             {CTA.primary.label}
