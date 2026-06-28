@@ -11,26 +11,12 @@ const CREAM = '#F9F8F6'
 const NAVY = '#1A1816'
 const MUTED = '#6A7282'
 
-/**
- * Best-effort serif font for the wordmark; falls back to the default font.
- * Time-boxed so a slow/blocked network can never hang the build.
- */
-async function loadSerif(): Promise<ArrayBuffer | null> {
-  try {
-    const res = await fetch(
-      'https://github.com/google/fonts/raw/main/ofl/sourceserif4/SourceSerif4%5Bopsz%2Cwght%5D.ttf',
-      { signal: AbortSignal.timeout(2500) },
-    )
-    if (!res.ok) return null
-    return await res.arrayBuffer()
-  } catch {
-    return null
-  }
-}
-
-export default async function OpengraphImage() {
-  const serif = await loadSerif()
-
+// Note: we deliberately do not load a custom serif here. next/og (Satori)
+// only accepts static TTF/OTF/WOFF fonts — variable fonts, WOFF2 and EOT all
+// throw during prerender and fail the production build. Source Serif 4 is only
+// distributed by Google as a variable font, so we render the wordmark with
+// Satori's built-in default font, which is guaranteed to prerender on Vercel.
+export default function OpengraphImage() {
   return new ImageResponse(
     (
       <div
@@ -46,7 +32,6 @@ export default async function OpengraphImage() {
       >
         <div
           style={{
-            fontFamily: serif ? 'Source Serif 4' : 'serif',
             fontSize: 56,
             fontWeight: 600,
             color: NAVY,
@@ -59,7 +44,6 @@ export default async function OpengraphImage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
           <div
             style={{
-              fontFamily: serif ? 'Source Serif 4' : 'serif',
               fontSize: 92,
               fontWeight: 600,
               lineHeight: 1.05,
@@ -77,11 +61,6 @@ export default async function OpengraphImage() {
         </div>
       </div>
     ),
-    {
-      ...size,
-      fonts: serif
-        ? [{ name: 'Source Serif 4', data: serif, style: 'normal', weight: 600 }]
-        : [],
-    },
+    size,
   )
 }
