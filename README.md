@@ -3,48 +3,115 @@
 Premium, Sharia-compliant **treatment financing** for the UAE — pay for medical,
 dental, fertility and cosmetic care over time, in simple monthly instalments.
 
-This is the marketing site. It reuses the calm, trust-first, editorial design
-language defined in the original `DESIGN.md` (warm cream + near-black ink,
+This is the marketing site **and** the `/apply` rate-check flow. It follows a
+calm, trust-first, editorial design language: warm cream + near-black ink,
 Source Serif 4 headlines / Source Sans 3 body, black pills for actions,
-photography as the only colour, motion that respects `prefers-reduced-motion`).
+photography as the only colour, and motion that respects
+`prefers-reduced-motion`.
 
-## Stack
+- **Production:** `main` → auto-deployed to Vercel
+- **Stack:** Next.js 16 (App Router) · React 19 · Tailwind CSS 3 · Vitest
 
-- **Next.js 16** (App Router) + **React 18**
-- **Tailwind CSS 3** with the shared brand tokens (`tailwind.config.ts`)
-- `next/font/google` for Source Serif 4 + Source Sans 3
-
-## Develop
+## Quick start
 
 ```bash
 npm install
 npm run dev      # http://localhost:3000
-npm run build    # production build
-npm run start    # serve the production build
 ```
 
-> `next/font/google` downloads fonts at build/dev time, so the first run needs
-> network access to `fonts.gstatic.com`.
+| Script | What it does |
+| --- | --- |
+| `npm run dev` | Start the dev server |
+| `npm run build` | Production build |
+| `npm run start` | Serve the production build |
+| `npm run lint` | ESLint (next lint) |
+| `npm test` | Run the Vitest suite once |
+| `npm run test:watch` | Vitest in watch mode |
 
-## Structure
+> **First run needs network.** `next/font/google` downloads Source Serif 4 +
+> Source Sans 3 from `fonts.gstatic.com` at build/dev time.
 
-- `src/app/page.tsx` — the landing page, composing the sections below
-- `src/app/apply/page.tsx` — placeholder for the rate-check / application flow
-- `src/components/`
-  - `Navbar` — transparent over hero, collapses to a floating white pill on scroll
-  - `Hero` — full-bleed photo, lower-left serif headline, trust row
-  - `ServicePillars` — four plain-text columns (what we finance)
-  - `HowItWorks` — scroll-pinned 5-step section with FAQ pills
-  - `Pricing` — the offer: rates + striped feature list with a representative example
-  - `Testimonials` — slow marquee of pastel cards + one black stat card
-  - `FounderQuote` — founder pull-quote + plan-options list
-  - `FinalCTA` — full-bleed photo + white pill
-  - `Footer` — warm-cream footer with disclaimer + link columns
-  - `CookieConsent` — dismissible dark bar, remembers dismissal in `localStorage`
+## What's in the box
 
-## Next steps (not yet built)
+- **Landing page** (`/`) — Hero, service pillars, how-it-works, pricing,
+  testimonials, founder quote, final CTA, footer.
+- **Rate-check flow** (`/apply`) — a multi-step conversational form that returns
+  an indicative monthly figure, backed by the `/api/rate-check` route.
+- **Legal pages** (`/terms`, `/privacy`, `/cookies`) — under the `(legal)`
+  route group with a shared layout.
+- **SEO & metadata** — `sitemap`, `robots`, web `manifest`, dynamic
+  `opengraph-image` + `apple-icon`, and Organization / FinancialService + FAQ
+  structured data (`JsonLd`).
+- **Analytics & consent** — consent-gated analytics with
+  `rate_check_started` / `rate_check_completed` events, a dismissible cookie
+  banner, and a "Manage cookies" control to reopen it.
+- **Tests** — Vitest + React Testing Library (`*.test.ts[x]`).
 
-- The conversational **rate-check / application flow** (`/apply`)
-- Accounts/auth and plan checkout
-- Real licensed photography (currently Unsplash placeholders)
-- Legal pages (Terms, Privacy, Cookies) — footer links point to `/apply` for now
+## Project structure
+
+```
+src/
+  app/
+    page.tsx                 # landing page (composes the sections)
+    layout.tsx               # root layout, fonts, metadata, analytics, consent
+    apply/
+      page.tsx               # /apply entry
+      RateCheckFlow.tsx      # multi-step conversational rate-check (client)
+    api/rate-check/route.ts  # POST endpoint backing the flow
+    (legal)/                 # /terms, /privacy, /cookies + shared layout
+    opengraph-image.tsx      # dynamic OG image (next/og)
+    apple-icon.tsx           # dynamic apple touch icon
+    icon.svg, manifest.ts, robots.ts, sitemap.ts
+  components/                # Navbar, Hero, ServicePillars, HowItWorks,
+                             # Pricing, Testimonials, FounderQuote, FinalCTA,
+                             # Footer, CookieConsent, ManageCookiesButton,
+                             # Analytics, JsonLd
+  data/                      # company, pricing, treatments, faqs (typed,
+                             # single source of truth) + tests
+  lib/                       # analytics, consent helpers + tests
+```
+
+## The `/api/rate-check` contract
+
+`POST /api/rate-check`
+
+```jsonc
+// request body
+{ "treatment": "dental", "amount": 12000, "term": 12,
+  "name": "Sara", "email": "sara@example.com", "consent": true }
+```
+
+| Status | Body | Meaning |
+| --- | --- | --- |
+| `200` | `{ result: { approved, apr, monthly, term, total } }` | Indicative decision |
+| `422` | `{ errors: { field: message } }` | Validation failed |
+| `400` | `{ error }` | Body wasn't valid JSON |
+
+Eligibility is **stubbed** behind `runEligibility()` so a real
+credit / affordability / KYC provider can be dropped in without touching the
+route or the form. The indicative monthly figure comes from `src/data/pricing.ts`.
+
+## Configure before launch
+
+- **`src/data/company.ts`** — single source of truth for name, legal entity,
+  `url`, support email, `fromMonthlyAed`, and `sameAs` social profiles. Metadata,
+  JSON-LD, and the legal pages all read from here.
+- **`src/data/pricing.ts`** — advertised rates, representative APR, min/max
+  amount, and terms.
+- **Eligibility provider** — replace the stub in `api/rate-check/route.ts`.
+- **Photography** — Hero/CTA images are Unsplash placeholders; swap in licensed
+  assets (allowed hosts are configured in `next.config.ts`).
+
+## Deployment
+
+Hosted on **Vercel**. Pushing to `main` triggers a production deploy; other
+branches and PRs get preview deploys.
+
+## Notes / gotchas
+
+- **OG image fonts** — `next/og` (Satori) only accepts static TTF/OTF/WOFF.
+  Variable fonts, WOFF2 and EOT crash the prerender, so `opengraph-image.tsx`
+  uses Satori's built-in font. To restore the serif wordmark, commit a static
+  TTF and load it from disk. Any `<div>` with more than one child must also set
+  an explicit `display`.
+- **React 19 is required** by Next 16 — keep `react`/`react-dom` on v19.
