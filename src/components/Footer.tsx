@@ -1,5 +1,10 @@
+import ManageCookiesButton from '@/components/ManageCookiesButton'
+
 const DISCLAIMER =
   'Mend is a treatment-financing platform that helps people in the UAE spread the cost of medical, dental, fertility and cosmetic care into manageable monthly payments. Mend is not a clinic and does not provide medical advice. Finance is subject to status and eligibility.'
+
+const LINK_CLASS =
+  'text-[14px] text-gray-500 transition-colors duration-150 hover:text-brand-navy'
 
 const FOOTER_LINKS: ReadonlyArray<{
   title: string
@@ -17,9 +22,9 @@ const FOOTER_LINKS: ReadonlyArray<{
   {
     title: 'Legal',
     links: [
-      { label: 'Terms of Service', href: '/apply' },
-      { label: 'Privacy Policy', href: '/apply' },
-      { label: 'Manage cookies', href: '/apply' },
+      { label: 'Terms of Service', href: '/terms' },
+      { label: 'Privacy Policy', href: '/privacy' },
+      { label: 'Cookie Policy', href: '/cookies' },
     ],
   },
 ]
@@ -50,14 +55,16 @@ export default function Footer() {
                 <ul className="mt-5 space-y-4">
                   {group.links.map((l) => (
                     <li key={l.label}>
-                      <a
-                        href={l.href}
-                        className="text-[14px] text-gray-500 transition-colors duration-150 hover:text-brand-navy"
-                      >
+                      <a href={l.href} className={LINK_CLASS}>
                         {l.label}
                       </a>
                     </li>
                   ))}
+                  {group.title === 'Legal' && (
+                    <li>
+                      <ManageCookiesButton className={LINK_CLASS} />
+                    </li>
+                  )}
                 </ul>
               </nav>
             ))}
@@ -66,7 +73,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-16 flex flex-col gap-2 border-t border-black/10 pt-8 text-[13px] text-gray-500">
-          <p>© 2026 Mend. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Mend. All rights reserved.</p>
         </div>
       </div>
     </footer>

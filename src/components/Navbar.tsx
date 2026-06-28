@@ -71,6 +71,7 @@ export default function Navbar({ overHero = true }: { overHero?: boolean }) {
             </Link>
             <Link
               href="/apply"
+              data-analytics="rate_check_started"
               className={`inline-flex items-center justify-center rounded-full px-5 py-2 text-[14px] font-semibold transition-colors ${
                 dark ? 'bg-brand-navy text-white hover:bg-brand-navy-mid' : 'bg-white text-brand-navy hover:bg-white/90'
               }`}
@@ -139,7 +140,12 @@ export default function Navbar({ overHero = true }: { overHero?: boolean }) {
           </nav>
 
           <div className="px-6 pb-10">
-            <Link href="/apply" onClick={() => setOpen(false)} className="btn-primary w-full">
+            <Link
+              href="/apply"
+              data-analytics="rate_check_started"
+              onClick={() => setOpen(false)}
+              className="btn-primary w-full"
+            >
               Check your rate
             </Link>
           </div>

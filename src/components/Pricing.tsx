@@ -73,7 +73,7 @@ export default function Pricing() {
         </dl>
 
         <div className="mt-12 text-center">
-          <a href="/apply" className="btn-primary">
+          <a href="/apply" data-analytics="rate_check_started" className="btn-primary">
             Check your rate
           </a>
         </div>
