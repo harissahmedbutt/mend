@@ -55,8 +55,7 @@ export default function OpengraphImage() {
             Pay for care, over time.
           </div>
           <div style={{ fontSize: 34, color: MUTED, maxWidth: 900, lineHeight: 1.3 }}>
-            Premium, Sharia-compliant treatment financing in the UAE — from AED{' '}
-            {COMPANY.fromMonthlyAed}/month.
+            {`Premium, Sharia-compliant treatment financing in the UAE — from AED ${COMPANY.fromMonthlyAed}/month.`}
           </div>
         </div>
       </div>
