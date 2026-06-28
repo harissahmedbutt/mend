@@ -1,7 +1,15 @@
 # Mend
 
-Premium, Sharia-compliant **treatment financing** for the UAE — pay for medical,
-dental, fertility and cosmetic care over time, in simple monthly instalments.
+![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
+![React 19](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)
+![TypeScript 5](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Tailwind CSS 3](https://img.shields.io/badge/Tailwind_CSS-3-38BDF8?logo=tailwindcss&logoColor=white)
+![Deployed on Vercel](https://img.shields.io/badge/Deployed_on-Vercel-black?logo=vercel)
+![License: Proprietary](https://img.shields.io/badge/license-proprietary-lightgrey)
+
+> Premium, Sharia-compliant **treatment financing** for the UAE — pay for
+> medical, dental, fertility and cosmetic care over time, in simple monthly
+> instalments.
 
 This is the marketing site **and** the `/apply` rate-check flow. It follows a
 calm, trust-first, editorial design language: warm cream + near-black ink,
@@ -11,6 +19,17 @@ photography as the only colour, and motion that respects
 
 - **Production:** `main` → auto-deployed to Vercel
 - **Stack:** Next.js 16 (App Router) · React 19 · Tailwind CSS 3 · Vitest
+
+## Contents
+
+- [Quick start](#quick-start)
+- [What's in the box](#whats-in-the-box)
+- [Project structure](#project-structure)
+- [The `/api/rate-check` contract](#the-apirate-check-contract)
+- [Configure before launch](#configure-before-launch)
+- [Deployment](#deployment)
+- [Notes / gotchas](#notes--gotchas)
+- [License](#license)
 
 ## Quick start
 
@@ -115,3 +134,10 @@ branches and PRs get preview deploys.
   TTF and load it from disk. Any `<div>` with more than one child must also set
   an explicit `display`.
 - **React 19 is required** by Next 16 — keep `react`/`react-dom` on v19.
+
+## License
+
+© Mend Technologies Ltd. All rights reserved.
+
+This source is published for reference only and is **not** licensed for reuse,
+redistribution, or derivative works. It is not open source.
