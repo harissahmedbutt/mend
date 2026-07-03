@@ -7,15 +7,38 @@
 ![Deployed on Vercel](https://img.shields.io/badge/Deployed_on-Vercel-black?logo=vercel)
 ![License: Proprietary](https://img.shields.io/badge/license-proprietary-lightgrey)
 
-> Premium, Sharia-compliant **treatment financing** for the UAE — pay for
+> Premium, Sharia-compliant **treatment financing** for the UAE. Pay for
 > medical, dental, fertility and cosmetic care over time, in simple monthly
 > instalments.
 
-This is the marketing site **and** the `/apply` rate-check flow. It follows a
-calm, trust-first, editorial design language: warm cream + near-black ink,
+## What Mend is
+
+Mend lets people in the UAE spread the cost of private healthcare (medical, dental,
+fertility, cosmetic) across simple monthly instalments, structured to be
+Sharia-compliant with no interest. Necessary treatment is often expensive and
+time-sensitive, and paying the full amount up front puts good care out of reach for
+many people. Mend turns a large one-off bill into a manageable monthly figure so the
+decision becomes about the treatment, not the price tag.
+
+The product is positioned as premium and trust-first, because financing a health
+decision is a sensitive moment and the experience has to feel calm and credible.
+
+**Who it's for:** UAE residents paying for private treatment who want a transparent,
+faith-aligned way to pay over time rather than a conventional interest-bearing loan.
+
+## About this repository
+
+This repo is the **marketing site** and the `/apply` rate-check flow: the public-facing
+front door where a visitor understands the offer and gets an indicative monthly figure.
+It follows a calm, trust-first, editorial design language: warm cream + near-black ink,
 Source Serif 4 headlines / Source Sans 3 body, black pills for actions,
 photography as the only colour, and motion that respects
 `prefers-reduced-motion`.
+
+The `/apply` flow is a multi-step conversational form: pick a treatment, amount, and
+term, and the `/api/rate-check` route returns an indicative monthly figure. Eligibility
+is stubbed behind `runEligibility()` so a real credit / affordability / KYC provider can
+be dropped in later without touching the form.
 
 - **Production:** `main` → auto-deployed to Vercel
 - **Stack:** Next.js 16 (App Router) · React 19 · Tailwind CSS 3 · Vitest
